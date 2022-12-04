@@ -87,6 +87,10 @@ public class Server {
 			else {
 				inputServer = options.poll(); //jogada do servidor
 				options.add(inputServer);
+				if(inputServer == histClient.get(histClient.size() - 1)) {
+					inputServer = options.poll();
+					options.add(inputServer);
+				}
 			}
 			intServer = stringtonumber(inputServer);
 //			System.out.println(intServer);
