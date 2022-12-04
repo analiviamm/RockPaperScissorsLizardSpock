@@ -95,7 +95,7 @@ public class Server {
 				rounds = rounds + 1;
 				resClient = intServer.toString() + "1";
 				//resClient = "Round " + (rounds) + ": " + inputClient + " (Client) x " + inputServer + " (Server) =  Client loses, server wins\n";
-				System.out.println(inputClient + " (Client) x " + inputServer + " (Server) = Client loses, server wins\n");
+				System.out.println("This round:" + inputClient + " (Client) x " + inputServer + " (Server) = Client loses, server wins\n");
 				serverwins = serverwins + 1;
 				histServer.add(inputServer);
 				histClient.add(inputClient);
@@ -106,17 +106,20 @@ public class Server {
 					rounds = rounds + 1;
 					resClient = intServer.toString() + "2";
 					//resClient = "Round " + rounds + ": "+ inputClient + " (Client) x " + inputServer + " (Server) = Client wins, server loses\n";
-					System.out.println(inputClient + " (Client) x " + inputServer + " (Server) =  Client wins, server loses\n");
+					System.out.println("This round:" + inputClient + " (Client) x " + inputServer + " (Server) =  Client wins, server loses\n");
 					clientwins = clientwins + 1;
 					histServer.add(inputServer);
 					histClient.add(inputClient);
 					result.add("Client");
 				}
 				else {
-					//empates nao sao contabilizados
+					rounds = rounds + 1;
 					//resClient = inputClient + " (Client) x " + inputServer + " (Server) = its a draw\n";
 					resClient = intServer.toString() + "3";
-					System.out.println(inputClient + " (Client) x " + inputServer + " (Server) = its a draw\n");
+					System.out.println("This round:" + inputClient + " (Client) x " + inputServer + " (Server) = its a draw\n");
+					histServer.add(inputServer);
+					histClient.add(inputClient);
+					result.add("Draw");
 					//rounds = rounds + 1;
 				}
 			}
@@ -124,7 +127,11 @@ public class Server {
 			//lets print the rounds history
 			System.out.println("History: \nServer wins: " + serverwins + "\nClient wins: " + clientwins);
 			for(int i = 0; i < result.size(); i++) {
-				System.out.println("Round " + (i+1) + ": " + histClient.get(i) + " (Client) x " + histServer.get(i) + " (Server) = " + result.get(i) + " wins\n");
+				if(result.get(i).equals("Draw")) {
+					System.out.println("Round " + (i+1) + ": " + histClient.get(i) + " (Client) x " + histServer.get(i) + " (Server) = " + result.get(i) + "\n");
+				}
+				else 
+					System.out.println("Round " + (i+1) + ": " + histClient.get(i) + " (Client) x " + histServer.get(i) + " (Server) = " + result.get(i) + " wins\n");
 			}
 			System.out.println("\n");
 			if(rounds == 15)
@@ -135,8 +142,14 @@ public class Server {
 			System.out.println(end);
 		}
 		else {
-			String end = "\n****The final winner is the client****\n";
-			System.out.println(end);
+			if(clientwins > serverwins) {
+				String end = "\n****The final winner is the client****\n";
+				System.out.println(end);
+			}
+			else {
+				String end = "\n****The final result is a draw****\n";
+				System.out.println(end);
+			}
 		}
 		welcomeSocket.close();
 

@@ -57,6 +57,8 @@ while (True):
     else:
         if(intwin == 2):
             winner = "Client"
+        else:
+            winner = "Draw"
     histClient.append(clientplay)
     histServer.append(serverplay)
     result.append(winner)
@@ -71,9 +73,17 @@ while (True):
             rounds = rounds + 1
             print("Round "  + str(rounds) + ": " + clientplay + " (Client) x " + serverplay + " (Server) =  Client wins, server loses\n")
         else:
-            print(clientplay + " (Client) x " + serverplay + " (Server) =  its a draw\n")
+            rounds = rounds + 1
+            print("Round "  + str(rounds) + ": " + clientplay + " (Client) x " + serverplay + " (Server) =  its a draw\n")
     if(rounds == 15):
         break
-
     
 sock.close()
+
+if(clientwins > serverwins):
+    print("\n****The final winner is the client****\n")
+else:
+    if(serverwins > clientwins):
+        print("\n****The final winner is the server****\n")
+    else:
+        print("\n****The final result is a draw****\n")
