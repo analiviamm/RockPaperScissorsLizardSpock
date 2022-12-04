@@ -6,25 +6,73 @@ PORT = 6000
 options = ["rock\n", "paper\n", "scissors\n", "lizard\n", "spock\n"]
 serverwins = 0
 clientwins = 0
+intwin = 0
+clientplay = ""
+serverplay = ""
+winner = ""
+histServer = []
+histClient = []
+result = []
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
 sock.connect((HOST, PORT))
-ans = "Round xx"
+rounds = 0
+def stringtonumber(s):
+    if(s == "rock"):
+        return 0
+    if(s== "paper"):
+        return 1
+    if( s== "scissors"):
+        return 2
+    if(s == "lizard"):
+        return 3
+    if(s == "spock"):
+        return 4
+    
+def numbertostring(s):
+    if(s == 0):
+        return "rock\n"
+    if(s== 1):
+        return "paper\n"
+    if( s== 2):
+        return "scissors\n"
+    if(s == 3):
+        return "lizard\n"
+    if(s == 4):
+        return "spock\n"
+    
+    
 while (True):
-    messageclient = random.choice(options)
-    sock.sendall(str.encode(messageclient))
-    print("client: ", messageclient)
-    winner = sock.recv(1024)
-    whowins = winner.decode()
-    if (whowins == "Server"):
-        serverwins = serverwins + 1
+    #client always chooses between lizard if he is winning or the last play from the server if he is losing
+    if(clientwins <= serverwins):
+        clientplay = random.choice(options)
     else:
-        clientwins = clientwins + 1
+        clientplay = histServer[len(histServer) - 1]   
+    sock.sendall(str.encode(clientplay))
     data = sock.recv(1024)
     outServer = data.decode()
-    print(outServer)
-    ans = outServer[0:8]
-    if(ans == "Round 15"):
+    serverplay = numbertostring(int(outServer[0]))
+    intwin = int(outServer[1])
+    if(intwin == 1):
+        winner = "Server"
+    else:
+        if(intwin == 2):
+            winner = "Client"
+    histClient.append(clientplay)
+    histServer.append(serverplay)
+    result.append(winner)
+    
+    if(intwin == 1):
+        serverwins = serverwins + 1
+        rounds = rounds + 1
+        print("Round "  + str(rounds) + ": " + clientplay + " (Client) x " + serverplay + " (Server) =  Server wins, client loses\n")
+    else:
+        if(intwin == 2):
+            clientwins = clientwins + 1
+            rounds = rounds + 1
+            print("Round "  + str(rounds) + ": " + clientplay + " (Client) x " + serverplay + " (Server) =  Client wins, server loses\n")
+        else:
+            print(clientplay + " (Client) x " + serverplay + " (Server) =  its a draw\n")
+    if(rounds == 15):
         break
 
     

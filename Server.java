@@ -2,6 +2,7 @@ import java.io.*;
 import java.net.*;
 import java.util.Scanner;
 import java.util.*;
+import java.lang.*;
 
 public class Server {
 	private static Integer PORT = 6000;
@@ -60,8 +61,8 @@ public class Server {
 		int rounds = 0;
 		int serverwins = 0;
 		int clientwins = 0;
-		int intClient = 0;
-		int intServer = 0;
+		Integer intClient = 0;
+		Integer intServer = 0;
 		
 		//teste 
 		ServerSocket welcomeSocket = new ServerSocket(Server.PORT);
@@ -92,7 +93,8 @@ public class Server {
 			
 			if(comp[intServer][intClient] > 0) {
 				rounds = rounds + 1;
-				resClient = "Round " + (rounds) + ": " + inputClient + " (Client) x " + inputServer + " (Server) =  Client loses, server wins\n";
+				resClient = intServer.toString() + "1";
+				//resClient = "Round " + (rounds) + ": " + inputClient + " (Client) x " + inputServer + " (Server) =  Client loses, server wins\n";
 				System.out.println(inputClient + " (Client) x " + inputServer + " (Server) = Client loses, server wins\n");
 				serverwins = serverwins + 1;
 				histServer.add(inputServer);
@@ -102,7 +104,8 @@ public class Server {
 			else {
 				if(comp[intServer][intClient] < 0) {
 					rounds = rounds + 1;
-					resClient = "Round " + rounds + ": "+ inputClient + " (Client) x " + inputServer + " (Server) = Client wins, server loses\n";
+					resClient = intServer.toString() + "2";
+					//resClient = "Round " + rounds + ": "+ inputClient + " (Client) x " + inputServer + " (Server) = Client wins, server loses\n";
 					System.out.println(inputClient + " (Client) x " + inputServer + " (Server) =  Client wins, server loses\n");
 					clientwins = clientwins + 1;
 					histServer.add(inputServer);
@@ -111,7 +114,8 @@ public class Server {
 				}
 				else {
 					//empates nao sao contabilizados
-					resClient = inputClient + " (Client) x " + inputServer + " (Server) = its a draw\n";
+					//resClient = inputClient + " (Client) x " + inputServer + " (Server) = its a draw\n";
+					resClient = intServer.toString() + "3";
 					System.out.println(inputClient + " (Client) x " + inputServer + " (Server) = its a draw\n");
 					//rounds = rounds + 1;
 				}
